@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GELORAGAMING - Lucky Wheel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ============================================================
+           GELORAGAMING PLAYER THEME
+           ============================================================ */
+        :root {
+            --gelora-green: #00992f;
+            --gelora-green-dark: #005f1d;
+            --gelora-green-light: #41d16d;
+            --gelora-green-gradient: linear-gradient(135deg, #00992f, #005f1d);
+            --gelora-gold: #ffd700;
+            --gelora-black: #0a0a0a;
+            --gelora-black-card: #111111;
+            --gelora-white: #f0f0f0;
+            --gelora-gray: #6b7280;
+            --gelora-border: rgba(0, 153, 47, 0.3);
+            --gelora-border-gold: rgba(255, 215, 0, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; margin: 0; padding: 0; }
+        body {
+            background: var(--gelora-black);
+            color: var(--gelora-white);
+            font-family: 'Inter', system-ui, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--gelora-black); }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(to bottom, var(--gelora-green), var(--gelora-green-dark));
+            border-radius: 10px;
+        }
+
+        /* ===== PLAYER LAYOUT ===== */
+        .player-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+            background: radial-gradient(ellipse at center, #0a1a0f, #050505);
+        }
+
+        /* ===== HEADER ===== */
+        .player-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            border-bottom: 2px solid var(--gelora-border);
+            flex-shrink: 0;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .player-header .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .player-header .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gelora-green-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #fff;
+            box-shadow: 0 0 30px rgba(0, 153, 47, 0.3);
+        }
+        .player-header .brand-text {
+            font-weight: 900;
+            font-size: 1.3rem;
+            color: var(--gelora-white);
+        }
+        .player-header .brand-text span {
+            color: var(--gelora-green-light);
+        }
+        .player-header .header-status {
+            color: var(--gelora-gray);
+            font-size: 0.85rem;
+        }
+        .player-header .header-status i {
+            color: var(--gelora-green-light);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .player-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== CLAIM CARD ===== */
+        .claim-card {
+            background: var(--gelora-black-card);
+            border: 1px solid var(--gelora-border);
+            border-radius: 16px;
+            padding: 32px 36px;
+            max-width: 520px;
+            width: 100%;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+            transition: all 0.3s ease;
+        }
+        .claim-card:hover {
+            border-color: rgba(0, 153, 47, 0.5);
+            box-shadow: 0 8px 50px rgba(0, 153, 47, 0.08);
+        }
+
+        .claim-card .card-title {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .claim-card .card-title h2 {
+            font-weight: 800;
+            font-size: 1.6rem;
+            background: linear-gradient(135deg, var(--gelora-white), var(--gelora-green-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+        }
+        .claim-card .card-title p {
+            color: var(--gelora-gray);
+            font-size: 0.9rem;
+            margin: 4px 0 0;
+        }
+
+        .claim-card .form-group {
+            margin-bottom: 16px;
+        }
+        .claim-card .form-group label {
+            color: var(--gelora-green-light);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .claim-card .form-group .form-control {
+            background: rgba(0, 0, 0, 0.6);
+            color: var(--gelora-white);
+            border: 1px solid var(--gelora-border);
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 0.95rem;
+            height: 44px;
+            width: 100%;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .claim-card .form-group .form-control:focus {
+            background: rgba(0, 0, 0, 0.8);
+            border-color: var(--gelora-green);
+            box-shadow: 0 0 0 3px rgba(0, 153, 47, 0.15);
+            outline: none;
+        }
+        .claim-card .form-group .form-control::placeholder {
+            color: var(--gelora-gray);
+            font-weight: 400;
+            letter-spacing: 0;
+        }
+
+        .btn-claim {
+            background: var(--gelora-green-gradient);
+            color: #fff;
+            font-weight: 700;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 153, 47, 0.3);
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+            height: 44px;
+        }
+        .btn-claim:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 35px rgba(0, 153, 47, 0.5);
+            color: #fff;
+            background: linear-gradient(135deg, #00b33a, #006b22);
+        }
+        .btn-claim:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ===== RESULT ALERT ===== */
+        .result-alert {
+            margin-top: 16px;
+            border-radius: 10px;
+            padding: 14px 18px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .result-alert.show {
+            display: block;
+        }
+        .result-alert.success {
+            background: rgba(0, 153, 47, 0.12);
+            border: 1px solid var(--gelora-green);
+            color: var(--gelora-green-light);
+        }
+        .result-alert.error {
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid #ef4444;
+            color: #f87171;
+        }
+        .result-alert.warning {
+            background: rgba(245, 158, 11, 0.12);
+            border: 1px solid #f59e0b;
+            color: #fbbf24;
+        }
+
+        .result-alert .prize-name {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--gelora-gold);
+        }
+
+        /* ===== FOOTER ===== */
+        .player-footer {
+            border-top: 1px solid var(--gelora-border);
+            padding: 12px 24px;
+            text-align: center;
+            color: var(--gelora-gray);
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+        .player-footer span {
+            color: var(--gelora-green-light);
+        }
+
+        /* ===== TOAST ===== */
+        .toast-custom {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #0d1f12;
+            color: var(--gelora-white);
+            padding: 12px 18px;
+            border-radius: 10px;
+            border-left: 5px solid var(--gelora-green);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+            z-index: 99999;
+            max-width: 380px;
+            font-weight: 600;
+            animation: slideInRight 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+        }
+        .toast-custom i { font-size: 1.1rem; color: var(--gelora-green-light); }
+        .toast-custom.error { border-left-color: #ef4444; }
+        .toast-custom.error i { color: #ef4444; }
+        .toast-custom.warning { border-left-color: #f59e0b; }
+        .toast-custom.warning i { color: #f59e0b; }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== CONFETTI ===== */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+            overflow: hidden;
+        }
+        .confetti-container.hidden { display: none; }
+
+        .text-gold { color: var(--gelora-gold); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 576px) {
+            .claim-card { padding: 24px 20px; }
+            .player-header { padding: 12px 16px; }
+            .player-header .brand-text { font-size: 1rem; }
+            .player-header .brand-icon { width: 32px; height: 32px; font-size: 1rem; }
+            .player-content { padding: 12px 16px; }
+            .claim-card .card-title h2 { font-size: 1.2rem; }
+            .claim-card .form-group .form-control { font-size: 0.85rem; height: 40px; }
+            .btn-claim { font-size: 0.9rem; height: 40px; }
+        }
+
+        @media (orientation: landscape) and (max-height: 500px) {
+            .player-content { padding: 10px 16px; }
+            .claim-card { padding: 16px 20px; max-width: 420px; }
+            .claim-card .card-title { margin-bottom: 12px; }
+            .claim-card .card-title h2 { font-size: 1.1rem; }
+            .claim-card .form-group { margin-bottom: 8px; }
+            .claim-card .form-group .form-control { height: 32px; font-size: 0.75rem; padding: 4px 10px; }
+            .btn-claim { height: 32px; font-size: 0.75rem; padding: 4px; }
+            .player-header { padding: 6px 12px; }
+            .player-header .brand-text { font-size: 0.85rem; }
+            .player-header .brand-icon { width: 28px; height: 28px; font-size: 0.8rem; }
+            .player-footer { padding: 4px 12px; font-size: 0.55rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="player-container">
+    <!-- ===== HEADER ===== -->
+    <header class="player-header">
+        <a class="brand" href="#">
+            <div class="brand-icon"><i class="fas fa-crown"></i></div>
+            <div class="brand-text">GELORA<span>GAMING</span></div>
+        </a>
+        <div class="header-status">
+            <i class="fas fa-circle me-1" style="color: var(--gelora-green-light);"></i>
+            Lucky Wheel · Klaim Tiket
+        </div>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="player-content">
+        <div class="claim-card">
+            <div class="card-title">
+                <h2><i class="fas fa-gift text-gold me-2"></i>Klaim Tiket</h2>
+                <p>Masukkan kode tiket yang kamu dapatkan untuk spin</p>
+            </div>
+
+            <form id="claimForm" onsubmit="handleClaim(event)">
+                <div class="form-group">
+                    <label>User ID</label>
+                    <input type="text" class="form-control" id="playerUserId" 
+                           placeholder="Masukkan User ID" required>
+                </div>
+                <div class="form-group">
+                    <label>Kode Tiket</label>
+                    <input type="text" class="form-control" id="playerTicketCode" 
+                           placeholder="Contoh: 19FL3Q" required>
+                </div>
+                <button type="submit" class="btn-claim" id="claimBtn">
+                    <i class="fas fa-spinner me-2"></i> Klaim & Spin
+                </button>
+            </form>
+
+            <div id="claimResult" class="result-alert">
+                <div id="resultMessage"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="player-footer">
+        © 2026 <span>GELORAGAMING</span>. TERMURAH TERBUKA.
+    </footer>
+</div>
+
+<!-- ===== CONFETTI ===== -->
+<div id="confettiContainer" class="confetti-container hidden">
+    <canvas id="confettiCanvas"></canvas>
+</div>
+
+<script>
+// ================================================================
+// PLAYER PAGE - CLAIM TICKET
+// ================================================================
+
+// ================================================================
+// LOAD DATA FROM localStorage (shared with admin)
+// ================================================================
+
+function loadPlayerData() {
+    try {
+        const data = localStorage.getItem('gelora_luckywheel_data');
+        if (data) {
+            return JSON.parse(data);
+        }
+    } catch (e) {
+        console.warn('Gagal load data:', e);
+    }
+    return { tickets: [], spins: [], prizes: [] };
+}
+
+function savePlayerData(data) {
+    try {
+        localStorage.setItem('gelora_luckywheel_data', JSON.stringify(data));
+    } catch (e) {
+        console.warn('Gagal save data:', e);
+    }
+}
+
+// ================================================================
+// CLAIM TICKET
+// ================================================================
+
+function handleClaim(event) {
+    event.preventDefault();
+    
+    const userId = document.getElementById('playerUserId').value.trim();
+    const code = document.getElementById('playerTicketCode').value.trim().toUpperCase();
+    const resultDiv = document.getElementById('claimResult');
+    const resultMsg = document.getElementById('resultMessage');
+    const claimBtn = document.getElementById('claimBtn');
+
+    // Reset result
+    resultDiv.classList.remove('show', 'success', 'error', 'warning');
+
+    if (!userId || !code) {
+        resultDiv.className = 'result-alert error show';
+        resultMsg.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i> Harap isi User ID dan kode tiket!';
+        return;
+    }
+
+    // Load data
+    const data = loadPlayerData();
+    if (!data || !data.tickets) {
+        resultDiv.className = 'result-alert error show';
+        resultMsg.innerHTML = '<i class="fas fa-times-circle me-2"></i> Sistem belum siap. Hubungi admin.';
+        return;
+    }
+
+    // Cari tiket
+    const ticket = data.tickets.find(t => 
+        t.code === code && 
+        t.userId === userId && 
+        t.status === 'available'
+    );
+
+    // Cek apakah sudah digunakan
+    const used = data.spins && data.spins.some(s => s.code === code);
+
+    claimBtn.disabled = true;
+    claimBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Memproses...';
+
+    setTimeout(() => {
+        if (ticket && !used) {
+            // TIKET VALID - Proses klaim
+            ticket.status = 'used';
+            
+            // Random prize
+            const prizes = ['Rp 20.000', 'Rp 5.000', 'Rp 10.000', 'Rp 100.000', 'Rp 50.000', 'Rp 500.000'];
+            const prize = prizes[Math.floor(Math.random() * prizes.length)];
+            
+            // Tambah ke riwayat spin
+            if (!data.spins) data.spins = [];
+            data.spins.push({
+                id: data.spins.length + 1,
+                time: new Date().toISOString().replace('T', ' ').slice(0, 19),
+                userId: userId,
+                code: code,
+                prize: prize,
+                status: 'Success'
+            });
+
+            // Save data
+            savePlayerData(data);
+
+            // Tampilkan hasil
+            resultDiv.className = 'result-alert success show';
+            resultMsg.innerHTML = `
+                <i class="fas fa-check-circle me-2"></i>
+                <strong>Selamat!</strong> Tiket <strong>${code}</strong> berhasil diklaim!<br>
+                Kamu mendapat hadiah: <span class="prize-name">${prize}</span>
+            `;
+
+            // Trigger confetti
+            triggerConfetti();
+
+            // Reset form
+            document.getElementById('playerTicketCode').value = '';
+
+        } else if (used) {
+            // Tiket sudah digunakan
+            resultDiv.className = 'result-alert error show';
+            resultMsg.innerHTML = `
+                <i class="fas fa-times-circle me-2"></i>
+                <strong>Tiket sudah digunakan!</strong><br>
+                Kode ${code} sudah pernah diklaim.
+            `;
+        } else {
+            // Tiket tidak ditemukan
+            resultDiv.className = 'result-alert error show';
+            resultMsg.innerHTML = `
+                <i class="fas fa-times-circle me-2"></i>
+                <strong>Tiket tidak valid!</strong><br>
+                Pastikan User ID dan kode tiket benar.
+            `;
+        }
+
+        claimBtn.disabled = false;
+        claimBtn.innerHTML = '<i class="fas fa-spinner me-2"></i> Klaim & Spin';
+    }, 800);
+}
+
+// ================================================================
+// TOAST
+// ================================================================
+
+function showToast(message, type = 'success') {
+    const icons = {
+        success: 'fa-check-circle',
+        warning: 'fa-exclamation-triangle',
+        error: 'fa-times-circle'
+    };
+    const toast = document.createElement('div');
+    toast.className = `toast-custom ${type}`;
+    toast.innerHTML = `<i class="fas ${icons[type] || icons.success}"></i> ${message}`;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.4s ease';
+        setTimeout(() => toast.remove(), 400);
+    }, 3500);
+}
+
+// ================================================================
+// CONFETTI
+// ================================================================
+
+function triggerConfetti() {
+    const container = document.getElementById('confettiContainer');
+    container.classList.remove('hidden');
+    const canvas = document.getElementById('confettiCanvas');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const ctx = canvas.getContext('2d');
+    
+    const particles = [];
+    const colors = ['#00992f', '#41d16d', '#ffd700', '#ffffff', '#00b33a', '#f0f0f0'];
+    for (let i = 0; i < 150; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            w: Math.random() * 12 + 4,
+            h: Math.random() * 6 + 3,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            speed: Math.random() * 3 + 1.5,
+            rotation: Math.random() * 360,
+            rotSpeed: (Math.random() - 0.5) * 12,
+            swing: Math.random() * 2 - 1,
+        });
+    }
+    let frame = 0;
+    const animate = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let active = false;
+        particles.forEach(p => {
+            p.y += p.speed;
+            p.x += Math.sin(frame / 50 + p.swing) * 0.6;
+            p.rotation += p.rotSpeed;
+            if (p.y < canvas.height + 20) active = true;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rotation * Math.PI / 180);
+            ctx.fillStyle = p.color;
+            ctx.shadowColor = 'rgba(0, 153, 47, 0.3)';
+            ctx.shadowBlur = 10;
+            ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+            ctx.restore();
+        });
+        frame++;
+        if (active) requestAnimationFrame(animate);
+        else container.classList.add('hidden');
+    };
+    animate();
+    setTimeout(() => container.classList.add('hidden'), 5000);
+}
+
+// ================================================================
+// AUTO-SYNC: Refresh data secara berkala
+// ================================================================
+
+// Cek update data dari admin setiap 10 detik
+setInterval(() => {
+    // Hanya refresh jika ada perubahan (bisa ditambahkan logic)
+    const data = loadPlayerData();
+    if (data) {
+        // Update status bisa ditampilkan jika diperlukan
+    }
+}, 10000);
+
+console.log('🎰 GELORAGAMING Player Page Loaded!');
+console.log('💡 Masukkan kode tiket yang didapat dari admin');
+console.log('🔗 Data terintegrasi dengan admin panel via localStorage');
+</script>
+</body>
+</html>
